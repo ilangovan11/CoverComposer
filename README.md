@@ -32,9 +32,13 @@ Security: Runs as a non-root appuser.
 Persistence: Environment variable HF_HOME redirects model weights to a persistent cache directory.
 Health Checks: Built-in Docker HEALTHCHECK on /_streamlit/health with a 60s cold-start window.
 🚢 Orchestration (docker-compose.yml)
-Resource Controls: CPU limits (1.0) and Memory limits (2Gi).
+Resource Controls: CPU limits (1.0) and Memory limits (2Gi)
+
 Volumes: Maps local folders for model caching and audio output to ensure data persistence across restarts.
 ☸️ Kubernetes Ready
+
+<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/d3d937bf-4bb1-4d56-92ab-3e67bd86fc5a" />
+
 Probes: Advanced readinessProbe and livenessProbe with 40s initial delays to accommodate model loading into RAM.
 Scaling: Standard Deployment with 1 replica and a ClusterIP Service exposing the app on Port 80.
 🛡️ Key Features & Constraints
@@ -42,3 +46,4 @@ GPU-Free: Fully optimized for standard server CPUs.
 Memory Efficient: Engineered to stay within a 4GB RAM footprint (2Gi limit in K8s).
 Cold-Start Hardened: Stabilized boot sequence to prevent container kills during AI model initialization.
 Production-Demo Ready: Includes .dockerignore, logging, and automated cleanup scripts.
+
