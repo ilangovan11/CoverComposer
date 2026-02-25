@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: covercomposer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: covercomposer
+  template:
+    metadata:
+      labels:
+        app: covercomposer
+    spec:
+      containers:
+      - name: covercomposer
+        image: covercomposer:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8501
+        resources:
+          limits:
+            cpu: "1"
+            memory: "2Gi"
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+        readinessProbe:
+          httpGet:
+            path: /_streamlit/health
+            port: 8501
+          initialDelaySeconds: 40
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /_streamlit/health
+            port: 8501
+          initialDelaySeconds: 40
+          periodSeconds: 10
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: generated-audio
+          mountPath: /app/assets/generated_audio
+        - name: hf-cache
+          mountPath: /app/.cache/huggingface
+      volumes:
+      - name: generated-audio
+        emptyDir: {}
+      - name: hf-cache
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: covercomposer-service
+spec:
+  type: ClusterIP
+  selector:
+    app: covercomposer
+  ports:
+    - port: 80
+      targetPort: 8501

@@ -1,0 +1,9 @@
+venv/
+**/__pycache__/
+.git/
+hf_cache/
+.env
+.streamlit/config.toml
+tests/
+assets/generated_audio/*
+!assets/generated_audio/.gitkeep

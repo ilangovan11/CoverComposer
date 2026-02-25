@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  covercomposer:
+    build: .
+    image: covercomposer:latest
+    container_name: covercomposer
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./assets/generated_audio:/app/assets/generated_audio
+      - ./hf_cache:/app/.cache/huggingface
+    env_file:
+      - .env
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 2g
